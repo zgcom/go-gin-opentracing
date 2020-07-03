@@ -1,4 +1,4 @@
-module github.com/Bose/go-gin-opentracing
+module github.com/zgcom/go-gin-opentracing
 
 go 1.14
 
