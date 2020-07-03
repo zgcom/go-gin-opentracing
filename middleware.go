@@ -15,10 +15,10 @@ func OpenTracer(operationPrefix []byte) gin.HandlerFunc {
 		// all before request is handled
 		var span opentracing.Span
 		if cspan, ok := c.Get("tracing-context"); ok {
-			span = StartSpanWithParent(cspan.(opentracing.Span).Context(), string(operationPrefix)+c.Request.Method, c.Request.Method, c.Request.URL.Path)
+			span = StartSpanWithParent(cspan.(opentracing.Span).Context(), string(operationPrefix)+c.Request.Path, c.Request.Method, c.Request.URL.Path)
 
 		} else {
-			span = StartSpanWithHeader(&c.Request.Header, string(operationPrefix)+c.Request.Method, c.Request.Method, c.Request.URL.Path)
+			span = StartSpanWithHeader(&c.Request.Header, string(operationPrefix)+c.Request.Path, c.Request.Method, c.Request.URL.Path)
 		}
 		defer span.Finish()            // after all the other defers are completed.. finish the span
 		c.Set("tracing-context", span) // add the span to the context so it can be used for the duration of the request.
