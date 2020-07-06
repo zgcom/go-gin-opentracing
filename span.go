@@ -65,7 +65,6 @@ func StartSpanWithHeader(header *http.Header, operationName, method, path string
 		wireContext, _ = opentracing.GlobalTracer().Extract(opentracing.HTTPHeaders, opentracing.HTTPHeadersCarrier(*header))
 	}
 	span := StartSpanWithParent(wireContext, operationName, method, path)
-	span.SetTag("current-goroutines", runtime.NumGoroutine())
 	return span
 	// return StartSpanWithParent(wireContext, operationName, method, path)
 }
