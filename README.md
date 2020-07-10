@@ -15,7 +15,7 @@ In order to understand the Go platform API, one must first be familiar with the 
 
 ## Installation
 
-`$ go get github.com/Bose/go-gin-opentracing`
+`$ go get github.com/zgcom/go-gin-opentracing`
 
 ## Usage as middleware
 

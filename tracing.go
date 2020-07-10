@@ -6,7 +6,7 @@
 package ginopentracing
 
 import (
-	"fmt"
+	"github.com/uber/jaeger-client-go/transport"
 	"io"
 
 	jaegerprom "github.com/uber/jaeger-lib/metrics/prometheus"
@@ -72,10 +72,7 @@ func InitTracing(serviceName string, tracingAgentHostPort string, opt ...Option)
 	}
 	factory := jaegerprom.New()
 	metrics := jaeger.NewMetrics(factory, map[string]string{"lib": "jaeger"})
-	transport, err := jaeger.NewUDPTransport(tracingAgentHostPort, 0)
-	if err != nil {
-		return tracer, reporter, closer, err
-	}
+	transport := transport.NewHTTPTransport(tracingAgentHostPort)
 
 	logAdapt := LogrusAdapter{InfoLevel: opts.enableInfoLog}
 	reporter = jaeger.NewCompositeReporter(
@@ -89,7 +86,6 @@ func InitTracing(serviceName string, tracingAgentHostPort string, opt ...Option)
 	var sampler jaeger.Sampler
 	sampler = jaeger.NewConstSampler(true)
 	if opts.sampleProbability > 0 {
-		fmt.Println("probable")
 		sampler, err = jaeger.NewProbabilisticSampler(opts.sampleProbability)
 	}
 
